@@ -5,6 +5,8 @@ session_set_cookie_params([
 session_start();
 include('config/database.php');
 $pdo = connectDB();
+$stmt = $pdo->query("SELECT username, comment, created_at FROM comments ORDER BY created_at DESC, id DESC LIMIT 3");
+$latest_comments = $stmt->fetchAll();
 ?>
 <!DOCTYPE html>
 <html lang="cs">
@@ -13,26 +15,6 @@ $pdo = connectDB();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Psychologie barev</title>
     <link rel="stylesheet" href="style.css">
-    <style>
-    .login-status {
-        display: inline-block;
-        padding: 0.4em 1em;
-        border-radius: 16px;
-        margin-left: 1em;
-        font-weight: bold;
-        font-size: 1em;
-    }
-    .logged-in {
-        background: #e0ffe0;
-        color: #1b791b;
-        border: 1px solid #51d651;
-    }
-    .logged-out {
-        background: #ffe0e0;
-        color: #b21a1a;
-        border: 1px solid #f08080;
-    }
-    </style>
 </head>
 <body>
     <div class="app-container">
@@ -43,26 +25,26 @@ $pdo = connectDB();
                     <?php if (isset($_SESSION['user_id'])): ?>
                         <span id="user-greeting">Vítejte, <?= htmlspecialchars($_SESSION['username']) ?></span>
                         <span class="login-status logged-in">Přihlášen</span>
-                        <a href="public/logout.php" id="logout-btn" class="btn">Odhlásit se</a>
+                        <a href="/Projekt/WA-2025-Ngo-Nam-Khanh/public/logout.php" id="logout-btn" class="btn">Odhlásit se</a>
                     <?php else: ?>
                         <span class="login-status logged-out">Nepřihlášen</span>
-                        <a href="public/login.php" id="auth-btn" class="btn">Přihlášení</a>
+                        <a href="/Projekt/WA-2025-Ngo-Nam-Khanh/public/login.php" id="auth-btn" class="btn">Přihlášení</a>
                     <?php endif; ?>
                 </div>
             </div>
             <nav>
                 <ul>
                     <li><a href="#introduction" class="nav-link">Úvod</a></li>
-                    <li><a href="#meanings" class="nav-link">Význam barev</a></li>
-                    <li><a href="#combinations" class="nav-link">Kombinace</a></li>
-                    <li><a href="#effects" class="nav-link">Efekty</a></li>
-                    <li><a href="#interactive" class="nav-link">Vyzkoušejte barvy</a></li>
-                    <li><a href="#comments" class="nav-link">Komentáře</a></li> 
+                    <li><a href="#meanings" class="nav-link">Barvy</a></li>
+                    <li><a href="/Projekt/WA-2025-Ngo-Nam-Khanh/comments.php">Komentáře</a></li>
+                    <li><a href="/Projekt/WA-2025-Ngo-Nam-Khanh/colormixer.php">Vyzkoušejte míchání barev</a></li>
                 </ul>
             </nav>
+
         </header>
 
         <main>
+
             <section id="introduction" class="content-section active-section">
                 <h2>Úvod do psychologie barev</h2>
                 <p>Psychologie barev studuje, jak barvy ovlivňují naše vnímání a chování.</p>
@@ -92,23 +74,30 @@ $pdo = connectDB();
                 <p>Obsah o psychologických efektech barev...</p>
             </section>
 
-            <section id="interactive" class="content-section">
-                <h2>Vyzkoušejte barvy</h2>
-                <div class="color-picker">
-                    <input type="color" id="colorInput" value="#ff0000">
-                    <button id="applyColor">Vybrat</button>
-                    <div id="colorDisplay"></div>
-                    <p id="colorDescription"></p>
-                </div>
-            </section>
 
-            <section id="comments" class="content-section">
-                <h2>Komentáře</h2>
-                <div id="comments-list"></div>
-                <form id="add-comment-form" autocomplete="off">
-                    <textarea id="comment-text" rows="3" style="width:100%;" placeholder="Přidejte komentář..." required></textarea>
-                    <button type="submit" style="margin-top:0.5rem;">Přidat komentář</button>
-                </form>
+            <section id="comments">
+                <h2>
+                    Komentáře 
+                </h2>
+                <div class="latest-comments">
+                    <?php if ($latest_comments): ?>
+                        <?php foreach ($latest_comments as $comm): ?>
+                            <div class="comment">
+                                <div class="meta">
+                                    <strong><?= htmlspecialchars($comm['username'] ?? 'Anonym') ?></strong>
+                                    &middot;
+                                    <?= htmlspecialchars($comm['created_at']) ?>
+                                </div>
+                                <div>
+                                    <?= nl2br(htmlspecialchars($comm['comment'])) ?>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <p>Žádné komentáře zatím nejsou.</p>
+                    <?php endif; ?>
+                </div>
+
             </section>
         </main>
 

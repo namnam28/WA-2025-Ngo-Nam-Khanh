@@ -52,11 +52,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <form method="POST">
             <div class="form-group">
                 <label for="username">Uživatelské jméno</label>
-                <input type="text" id="username" name="username" required autocomplete="username">
+                <input type="text" user_id="username" name="username" required autocomplete="username">
             </div>
             <div class="form-group">
                 <label for="password">Heslo</label>
-                <input type="password" id="password" name="password" required autocomplete="current-password">
+                <input type="password" user_id="password" name="password" required autocomplete="current-password">
             </div>
             <button type="submit" class="btn-primary">Přihlásit</button>
         </form>

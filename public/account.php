@@ -4,7 +4,7 @@ session_set_cookie_params([
 ]);
 session_start();
 require_once '../config/database.php';
-require_once '../classes/User.php';
+require_once '../classes/user.php';
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");

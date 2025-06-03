@@ -412,3 +412,35 @@ h2 {
         max-width: 95vw;
     }
 }
+
+.latest-comments .comment {
+    background: #fff;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px #ccc;
+    padding: 1em;
+    margin-bottom: 1em;
+}
+.latest-comments .meta {
+    color: #888;
+    font-size: 0.9em;
+    margin-bottom: 0.3em;
+}
+
+.login-status {
+    display: inline-block;
+    padding: 0.4em 1em;
+    border-radius: 16px;
+    margin-left: 1em;
+    font-weight: bold;
+    font-size: 1em;
+}
+.logged-in {
+    background: #e0ffe0;
+    color: #1b791b;
+    border: 1px solid #51d651;
+}
+.logged-out {
+    background: #ffe0e0;
+    color: #b21a1a;
+    border: 1px solid #f08080;
+}

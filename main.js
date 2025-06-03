@@ -117,25 +117,29 @@ document.addEventListener('DOMContentLoaded', function () {
 
     navLinks.forEach(link => {
         link.addEventListener('click', function (e) {
-            e.preventDefault();
-            const targetId = this.getAttribute('href').substring(1);
+            const href = this.getAttribute('href');
+            if (href && href.startsWith('#')) {
+                e.preventDefault();
+                const targetId = href.substring(1);
 
-            contentSections.forEach(section => {
-                section.classList.remove('active-section');
-            });
-            const targetSection = document.getElementById(targetId);
-            if (targetSection) {
-                targetSection.classList.add('active-section');
-            }
+                contentSections.forEach(section => {
+                    section.classList.remove('active-section');
+                });
+                const targetSection = document.getElementById(targetId);
+                if (targetSection) {
+                    targetSection.classList.add('active-section');
+                }
 
-            // Reset color detail view if switching to meanings
-            if (targetId === 'meanings') {
-                hideColorDetail();
+                // Reset color detail view if switching to meanings
+                if (targetId === 'meanings') {
+                    hideColorDetail();
+                }
             }
+            // For non-anchor links (e.g., comments.php), allow normal navigation.
         });
     });
 
-    // Color grid rendering
+    // Color grid rendering (only if present)
     const colorGrid = document.querySelector('.color-grid');
     const colorDetailContainer = document.getElementById('color-detail-container');
     const colorDetailContent = document.getElementById('color-detail-content');
@@ -190,7 +194,13 @@ document.addEventListener('DOMContentLoaded', function () {
         backButton.addEventListener('click', hideColorDetail);
     }
 
-    // Color picker panel
+    // Render color grid only if present (main page)
+    if (colorGrid && colorDetailContainer && colorDetailContent) {
+        renderColorGrid();
+        hideColorDetail();
+    }
+
+    // Color picker panel (single color, main page)
     const colorInput = document.getElementById('colorInput');
     const colorDisplay = document.getElementById('colorDisplay');
     const applyBtn = document.getElementById('applyColor');
@@ -205,7 +215,46 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Render on load
-    renderColorGrid();
-    hideColorDetail();
+    // Color mixer (colormixer.php)
+    const colorInput1 = document.getElementById('colorInput1');
+    const colorInput2 = document.getElementById('colorInput2');
+    const mixBtn = document.getElementById('mixColors');
+    const mixedColorDisplay = document.getElementById('mixedColorDisplay');
+    const mixedColorHex = document.getElementById('mixedColorHex');
+
+    function mixHexColors(hex1, hex2) {
+        function hexToRgb(hex) {
+            hex = hex.replace('#', '');
+            if (hex.length === 3) {
+                hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
+            }
+            return [
+                parseInt(hex.substr(0,2), 16),
+                parseInt(hex.substr(2,2), 16),
+                parseInt(hex.substr(4,2), 16)
+            ];
+        }
+        function rgbToHex(rgb) {
+            return '#' + rgb.map(x => {
+                const hex = x.toString(16);
+                return hex.length === 1 ? '0' + hex : hex;
+            }).join('');
+        }
+        const rgb1 = hexToRgb(hex1);
+        const rgb2 = hexToRgb(hex2);
+        const mixed = [
+            Math.round((rgb1[0] + rgb2[0]) / 2),
+            Math.round((rgb1[1] + rgb2[1]) / 2),
+            Math.round((rgb1[2] + rgb2[2]) / 2)
+        ];
+        return rgbToHex(mixed);
+    }
+
+    if (colorInput1 && colorInput2 && mixBtn && mixedColorDisplay && mixedColorHex) {
+        mixBtn.addEventListener('click', () => {
+            const mixed = mixHexColors(colorInput1.value, colorInput2.value);
+            mixedColorDisplay.style.backgroundColor = mixed;
+            mixedColorHex.textContent = `Výsledná barva: ${mixed}`;
+        });
+    }
 });

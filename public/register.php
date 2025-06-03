@@ -58,19 +58,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <form method="POST">
             <div class="form-group">
                 <label for="username">Uživatelské jméno</label>
-                <input type="text" id="username" name="username" required autocomplete="username">
+                <input type="text" user_id="username" name="username" required autocomplete="username">
             </div>
             <div class="form-group">
                 <label for="email">E-mail</label>
-                <input type="email" id="email" name="email" required autocomplete="email">
+                <input type="email" user_id="email" name="email" required autocomplete="email">
             </div>
             <div class="form-group">
                 <label for="password">Heslo</label>
-                <input type="password" id="password" name="password" required autocomplete="new-password">
+                <input type="password" user_id="password" name="password" required autocomplete="new-password">
             </div>
             <div class="form-group">
                 <label for="confirm_password">Potvrďte heslo</label>
-                <input type="password" id="confirm_password" name="confirm_password" required autocomplete="new-password">
+                <input type="password" user_id="confirm_password" name="confirm_password" required autocomplete="new-password">
             </div>
             <button type="submit">Registrovat</button>
         </form>
