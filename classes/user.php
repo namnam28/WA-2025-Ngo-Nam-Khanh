@@ -20,7 +20,7 @@ class User {
     /**
      * Attempts to log in the user.
      * On success, sets $_SESSION['user_id'] and $_SESSION['username'].
-     * Returns true on success, false on failure.
+     * Vrácení true on success, false on failure.
      */
     public function login($username, $password) {
         $stmt = $this->db->prepare("SELECT * FROM users WHERE username = ?");
