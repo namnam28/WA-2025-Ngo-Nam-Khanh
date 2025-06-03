@@ -1,0 +1,211 @@
+// Color data - Czech color psychology
+const colorMeanings = [
+    { 
+        name: "Červená", 
+        hex: "#ff0000", 
+        meaning: "Energie, vášeň, akce, nebezpečí",
+        details: {
+            psychology: "Červená zvyšuje srdeční tep a vytváří pocit naléhavosti.",
+            marketing: "Často používána při výprodejích a v potravinářství, protože stimuluje chuť k jídlu.",
+            culture: "V Číně symbolizuje štěstí a prosperitu. V Jižní Africe je barvou smutku.",
+            combinations: "Dobře funguje s neutrálními barvami jako bílá, černá a šedá. Doplněk k zelené."
+        }
+    },
+    { 
+        name: "Modrá", 
+        hex: "#0000ff", 
+        meaning: "Důvěra, klid, stabilita, profesionalita",
+        details: {
+            psychology: "Modrá má uklidňující účinek a je často spojována se stabilitou a spolehlivostí.",
+            marketing: "Preferována finančními institucemi a technologickými společnostmi pro vyjádření důvěry.",
+            culture: "V západních kulturách představuje mužnost, zatímco ve východní Asii může symbolizovat nesmrtelnost.",
+            combinations: "Dobře ladí s oranžovou (doplňkovou) a dalšími modrými pro monochromatické schéma."
+        }
+    },
+    { 
+        name: "Fialová", 
+        hex: "#ae00ff", 
+        meaning: "Kreativita, spiritualita, luxus, mystika",
+        details: {
+            psychology: "Fialová podporuje kreativitu a spojuje logiku s intuicí.",
+            marketing: "Používána pro produkty spojené s kreativitou a luxusem.",
+            culture: "Historicky spojována s královskou rodinou a spiritualitou.",
+            combinations: "Dobře funguje se zlatou a světle zelenou."
+        }
+    },
+    { 
+        name: "Žlutá", 
+        hex: "#ffff00", 
+        meaning: "Optimismus, štěstí, energie, pozornost",
+        details: {
+            psychology: "Žlutá povzbuzuje mysl a zvyšuje koncentraci.",
+            marketing: "Používána k upoutání pozornosti a vyvolání pocitu štěstí.",
+            culture: "V mnoha kulturách symbolizuje štěstí a inteligenci.",
+            combinations: "Dobře kontrastuje s fialovou a tmavě modrou."
+        }
+    },
+    { 
+        name: "Zelená", 
+        hex: "#36ff00", 
+        meaning: "Příroda, růst, harmonie, zdraví",
+        details: {
+            psychology: "Zelená uklidňuje a symbolizuje obnovu a bezpečí.",
+            marketing: "Používána pro ekologické a zdravé produkty.",
+            culture: "V islámu je to posvátná barva, na Západě spojována s přírodou.",
+            combinations: "Dobře funguje s hnědou a krémovou."
+        }
+    },
+    { 
+        name: "Oranžová", 
+        hex: "#ff8700", 
+        meaning: "Nadšení, teplo, úspěch, odvaha",
+        details: {
+            psychology: "Oranžová kombinuje energii červené a štěstí žluté.",
+            marketing: "Používána pro výzvy k akci a sportovní produkty.",
+            culture: "V Asii spojována s spiritualitou a očistou.",
+            combinations: "Dobře ladí s azurovou a bílou."
+        }
+    },
+    { 
+        name: "Růžová", 
+        hex: "#fc66c7", 
+        meaning: "Láska, něha, ženskost, romantika",
+        details: {
+            psychology: "Růžová má uklidňující účinek a snižuje agresi.",
+            marketing: "Používána pro produkty cílené na ženy a romantiku.",
+            culture: "Na Západě spojována s dívčím a romantickým.",
+            combinations: "Dobře funguje s bílou a světle šedou."
+        }
+    }
+];
+
+// Utility to find the closest defined color
+function findClosestColor(hex) {
+    const r = parseInt(hex.substr(1, 2), 16);
+    const g = parseInt(hex.substr(3, 2), 16);
+    const b = parseInt(hex.substr(5, 2), 16);
+
+    let closest = colorMeanings[0];
+    let minDistance = Infinity;
+
+    colorMeanings.forEach(color => {
+        const cr = parseInt(color.hex.substr(1, 2), 16);
+        const cg = parseInt(color.hex.substr(3, 2), 16);
+        const cb = parseInt(color.hex.substr(5, 2), 16);
+        const distance = Math.sqrt(
+            Math.pow(r - cr, 2) +
+            Math.pow(g - cg, 2) +
+            Math.pow(b - cb, 2)
+        );
+        if (distance < minDistance) {
+            minDistance = distance;
+            closest = color;
+        }
+    });
+    return closest;
+}
+
+// Helper: Check if user is logged in (relies on PHP session to output a JS variable)
+function isUserLoggedIn() {
+    return window.USER_LOGGED_IN === true;
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    // Sections and navigation
+    const navLinks = document.querySelectorAll('.nav-link');
+    const contentSections = document.querySelectorAll('.content-section');
+
+    navLinks.forEach(link => {
+        link.addEventListener('click', function (e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href').substring(1);
+
+            contentSections.forEach(section => {
+                section.classList.remove('active-section');
+            });
+            const targetSection = document.getElementById(targetId);
+            if (targetSection) {
+                targetSection.classList.add('active-section');
+            }
+
+            // Reset color detail view if switching to meanings
+            if (targetId === 'meanings') {
+                hideColorDetail();
+            }
+        });
+    });
+
+    // Color grid rendering
+    const colorGrid = document.querySelector('.color-grid');
+    const colorDetailContainer = document.getElementById('color-detail-container');
+    const colorDetailContent = document.getElementById('color-detail-content');
+    const backButton = document.getElementById('back-to-colors');
+
+    function renderColorGrid() {
+        colorGrid.innerHTML = '';
+        colorMeanings.forEach(color => {
+            const card = document.createElement('div');
+            card.className = 'color-card';
+            card.style.backgroundColor = color.hex;
+            card.innerHTML = `
+                <h3>${color.name}</h3>
+                <p>${color.meaning}</p>
+                <small>${color.hex}</small>
+            `;
+            card.addEventListener('click', () => {
+                showColorDetail(color);
+            });
+            colorGrid.appendChild(card);
+        });
+    }
+
+    // Show color detail
+    function showColorDetail(color) {
+        colorDetailContent.innerHTML = `
+            <div style="background: ${color.hex}; width: 100%; height: 100px; border-radius: 8px 8px 0 0;"></div>
+            <div style="padding: 1.5rem;">
+                <h2>${color.name}</h2>
+                <h3>Psychologické účinky</h3>
+                <p>${color.details.psychology}</p>
+                <h3>V marketingu</h3>
+                <p>${color.details.marketing}</p>
+                <h3>Kulturní význam</h3>
+                <p>${color.details.culture}</p>
+                <h3>Kombinace barev</h3>
+                <p>${color.details.combinations}</p>
+            </div>
+        `;
+        colorGrid.style.display = 'none';
+        colorDetailContainer.classList.remove('color-detail-hidden');
+        colorDetailContainer.classList.add('color-detail-visible');
+    }
+
+    function hideColorDetail() {
+        colorDetailContainer.classList.remove('color-detail-visible');
+        colorDetailContainer.classList.add('color-detail-hidden');
+        colorGrid.style.display = 'grid';
+    }
+
+    if (backButton) {
+        backButton.addEventListener('click', hideColorDetail);
+    }
+
+    // Color picker panel
+    const colorInput = document.getElementById('colorInput');
+    const colorDisplay = document.getElementById('colorDisplay');
+    const applyBtn = document.getElementById('applyColor');
+    const colorDescription = document.getElementById('colorDescription');
+
+    if (applyBtn && colorInput && colorDisplay && colorDescription) {
+        applyBtn.addEventListener('click', () => {
+            const selectedColor = colorInput.value;
+            colorDisplay.style.backgroundColor = selectedColor;
+            const closestColor = findClosestColor(selectedColor);
+            colorDescription.textContent = `Tento odstín je podobný ${closestColor.name}, která typicky symbolizuje: ${closestColor.meaning}`;
+        });
+    }
+
+    // Render on load
+    renderColorGrid();
+    hideColorDetail();
+});
