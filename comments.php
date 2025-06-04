@@ -53,7 +53,7 @@ $comments = $stmt->fetchAll();
 </head>
 <body>
     <h2>Komentáře</h2>
-    <h3></h3>
+    <h3>Líbila se vám tato stránka? Máte vlastní zkušenosti s barvami? Co byste změnili? Napište nám do komentářů!</h3>
 
     <div class="comment-list">
         <?php if ($comments): ?>

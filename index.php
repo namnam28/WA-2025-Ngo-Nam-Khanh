@@ -48,7 +48,15 @@ $latest_comments = $stmt->fetchAll();
 
             <section id="introduction" class="content-section active-section">
                 <h2>Úvod do psychologie barev</h2>
-                <p>Psychologie barev studuje, jak barvy ovlivňují naše vnímání a chování.</p>
+                    <p>Barvy nejsou jen pasivním vizuálním vjemem – představují komplexní komunikační systém, který hluboce ovlivňuje naši psychiku, fyziologii i společenské interakce. Psychologie barev, jakožto interdisciplinární vědní obor, propojuje poznatky z neurověd, antropologie, marketingu a výtvarného umění, aby odhalila fascinující mechanismy, jakými barevné podněty formují naše vnímání světa. Věděli jste, že lidské oko dokáže rozlišit až 10 milionů barevných odstínů? Každý z těchto odstínů přitom v našem mozku spouští jedinečnou kaskádu biochemických reakcí. Například pouhé vystavení se červenému světlu může zvýšit krevní tlak o 5-10 %, zatímco modré světlo reguluje produkci melatoninu a ovlivňuje tak kvalitu spánku. Tato fyziologická reakce má své kořeny v evoluci – naši předkové se naučili číst barevné signály v přírodě jako varování, příležitost nebo zdroj potravy. Moderní výzkumy dokazují, že vliv barev přesahuje čistě biologickou rovinu. Barvy se staly mocným nódem v mezilidské komunikaci, marketingu a dokonce i v politice.</p>
+                    <br>
+                    <p>Například:</p>
+                    <br>
+                    <p>• V obchodním prostředí může správná volba barev zvýšit rozpoznatelnost značky až o 80 %</p>
+                    <p>• Vzdělávací prostory s optimální barevnou kombinací zlepšují schopnost učení až o 25 %</p>
+                    <p>• Nemocniční pokoje s uklidňující barevnou paletou urychlují rekonvalescenci pacientů</p>
+                    <br>
+                    <p>Psychologie barev dnes nachází uplatnění v desítkách profesních odvětví – od neurodesignu přes behaviorální marketing až po arteterapii. Její principy využívají architekti při navrhování veřejných prostor, vývojáři při tvorbě uživatelských rozhraní, ale i političtí stratégové při vytváření vizuální identity kampaní. Tento vědní obor nám pomáhá pochopit, proč některé barevné kombinace vyvolávají okamžitou důvěru, zatímco jiné podvědomě odpuzují. Proč se kultura po celém světě shoduje na červené jako barvě nebezpečí, ale vnímání růžové se napříč společnostmi radikálně liší. A především – jak můžeme tyto poznatky využít k vytváření harmonického prostředí, efektivní komunikaci a zlepšení kvality života.</p>
             </section>
 
             <section id="meanings" class="content-section">
