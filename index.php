@@ -37,7 +37,8 @@ $latest_comments = $stmt->fetchAll();
                     <li><a href="#introduction" class="nav-link">Úvod</a></li>
                     <li><a href="#meanings" class="nav-link">Barvy</a></li>
                     <li><a href="/Projekt/WA-2025-Ngo-Nam-Khanh/comments.php">Komentáře</a></li>
-                    <li><a href="/Projekt/WA-2025-Ngo-Nam-Khanh/colormixer.php">Vyzkoušejte míchání barev</a></li>
+                    <li><a href="/Projekt/WA-2025-Ngo-Nam-Khanh/colormixer.php">Míchačka barev</a></li>
+                    <li><a href="/Projekt/WA-2025-Ngo-Nam-Khanh/savedcolors.php">Uložené Barvy</a></li>
                 </ul>
             </nav>
 
@@ -53,13 +54,11 @@ $latest_comments = $stmt->fetchAll();
             <section id="meanings" class="content-section">
                 <h2>Význam barev</h2>
                 <div class="color-grid">
-                    <!-- Color cards will be added by JavaScript -->
                 </div>
                 
                 <div id="color-detail-container" class="color-detail-hidden">
                     <button id="back-to-colors">← Zpět na barvy</button>
                     <div id="color-detail-content">
-                        <!-- Content will be inserted by JavaScript -->
                     </div>
                 </div>
             </section>

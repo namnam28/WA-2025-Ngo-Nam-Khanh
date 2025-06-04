@@ -12,7 +12,7 @@ $user = new User($pdo);
 $error = null;
 
 
-// Redirect if already logged in
+// Přesměrování, pokud jste již přihlášeni
 if (isset($_SESSION['user_id'])) {
     header("Location:../index.php");
     exit();
@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <title>Přihlášení</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../style.css">
 </head>
 <body>
     <div class="auth-container">

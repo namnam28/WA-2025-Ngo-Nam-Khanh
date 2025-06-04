@@ -18,14 +18,14 @@ class User {
     }
 
     /**
-     * Attempts to log in the user.
-     * On success, sets $_SESSION['user_id'] and $_SESSION['username'].
-     * Vrácení true on success, false on failure.
-     */
+    * Pokusí se přihlásit uživatele.
+    * V případě úspěchu nastaví $_SESSION['user_id'] a $_SESSION['username'].
+    * Vrácení true v případě úspěchu, false v případě neúspěchu.
+    */
     public function login($username, $password) {
         $stmt = $this->db->prepare("SELECT * FROM users WHERE username = ?");
         $stmt->execute([trim($username)]);
-        $user = $stmt->fetch(PDO::FETCH_ASSOC); // <-- Force associative keys
+        $user = $stmt->fetch(PDO::FETCH_ASSOC); 
 
         if ($user && password_verify($password, $user['password_hash'])) {
             $_SESSION['user_id'] = $user['user_id'];
@@ -36,7 +36,7 @@ class User {
     }
 
     /**
-     * Get user data by ID.
+     * Získat uživatelská data podle ID.
      */
     public function getUser($user_id) {
         $stmt = $this->db->prepare("SELECT * FROM users WHERE user_id = ?");

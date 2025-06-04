@@ -15,7 +15,7 @@ $pdo = connectDB();
 $user = new User($pdo);
 $userData = $user->getUser($_SESSION['user_id']);
 if (!$userData) {
-    // user nenalezen; log out and redirect
+    // uživatel nenalezen; log out a redirect
     session_unset();
     session_destroy();
     header("Location: login.php");

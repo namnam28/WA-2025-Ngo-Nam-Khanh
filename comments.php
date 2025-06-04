@@ -7,7 +7,7 @@ session_start();
 include('config/database.php');
 $pdo = connectDB();
 
-// Handle new comment submission (only for logged-in users)
+// Zpracování nových komentářů (pouze pro přihlášené uživatele)
 $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!isset($_SESSION['user_id'])) {
@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Fetch comments
+// Načíst komentáře
 $stmt = $pdo->query("SELECT * FROM comments ORDER BY created_at DESC, id DESC");
 $comments = $stmt->fetchAll();
 ?>

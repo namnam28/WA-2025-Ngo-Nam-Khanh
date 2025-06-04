@@ -2,7 +2,7 @@
 define('DB_HOST', 'localhost');
 define('DB_USER', 'root');
 define('DB_PASS', '');
-define('DB_NAME', 'Projekt');
+define('DB_NAME', 'projekt');
 define('DB_CHARSET', 'utf8mb4');
 
 function connectDB() {
@@ -16,7 +16,7 @@ function connectDB() {
         
         $pdo = new PDO($dsn, DB_USER, DB_PASS, $options);
         
-        // Verify connection by running a simple query
+        // Ověření připojení spuštěním jednoduchého dotazu
         $pdo->query("SELECT 1");
         
         return $pdo;
