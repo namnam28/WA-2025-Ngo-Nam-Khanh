@@ -20,10 +20,11 @@ $latest_comments = $stmt->fetchAll();
     <div class="app-container">
         <header>
             <div class="header-content">
+            <img src="..\assets\Návrh bez názvu.png" alt="Logo" class="site-logo">
                 <h1>Psychologie barev</h1>
                 <div class="user-controls">
                     <?php if (isset($_SESSION['user_id'])): ?>
-                        <span id="user-greeting">Vítejte, <?= htmlspecialchars($_SESSION['username']) ?></span>
+                        <span id="user-greeting">Vítejte, <?= htmlspecialchars($_SESSION['username']) ?></span> 
                         <span class="login-status logged-in">Přihlášen</span>
                         <a href="/Projekt/WA-2025-Ngo-Nam-Khanh/public/logout.php" id="logout-btn" class="btn">Odhlásit se</a>
                     <?php else: ?>
@@ -109,7 +110,7 @@ $latest_comments = $stmt->fetchAll();
         </main>
 
         <footer>
-            <p>Zdroje a reference...</p>
+            <p></p>
         </footer>
     </div>
 

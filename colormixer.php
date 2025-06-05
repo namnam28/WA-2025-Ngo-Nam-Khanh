@@ -43,6 +43,8 @@ if ($is_logged_in && $_SERVER['REQUEST_METHOD'] === 'POST') {
     </style>
 </head>
 <body>
+    <header>
+    <img src="..\assets\Návrh bez názvu.png" alt="Logo" class="site-logo">
     <div class="mixer">
         <h2>Míchačka barev</h2>
         <?php if (!empty($message)): ?>
@@ -137,5 +139,6 @@ if ($is_logged_in && $_SERVER['REQUEST_METHOD'] === 'POST') {
         updatePreviews();
         doMix();
     </script>
+    </header>
 </body>
 </html>
