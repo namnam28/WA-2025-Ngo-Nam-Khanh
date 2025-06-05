@@ -140,5 +140,8 @@ if ($is_logged_in && $_SERVER['REQUEST_METHOD'] === 'POST') {
         doMix();
     </script>
     </header>
+    <footer>
+    &copy; 2025 Míchačka barev. Všechna práva vyhrazena.
+    </footer>
 </body>
 </html>

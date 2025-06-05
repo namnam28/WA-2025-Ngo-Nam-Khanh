@@ -52,6 +52,8 @@ $comments = $stmt->fetchAll();
     </style>
 </head>
 <body>
+    <header>
+    <img src="..\assets\Návrh bez názvu.png" alt="Logo" class="site-logo">
     <h2>Komentáře</h2>
     <h3>Líbila se vám tato stránka? Máte vlastní zkušenosti s barvami? Co byste změnili? Napište nám do komentářů!</h3>
 
@@ -93,5 +95,9 @@ $comments = $stmt->fetchAll();
     <?php else: ?>
         <p style="color: #c00; font-weight: bold;">Pro přidání komentáře se prosím <a class="login-link" href="/Projekt/WA-2025-Ngo-Nam-Khanh/public/login.php">přihlaste</a>. Jako host si můžete komentáře pouze přečíst.</p>
     <?php endif; ?>
+</header>
+<footer>
+    &copy; 2025 Komentáře. Všechna práva vyhrazena.
+</footer>
 </body>
 </html>

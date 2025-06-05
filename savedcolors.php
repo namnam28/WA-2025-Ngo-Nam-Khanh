@@ -35,6 +35,8 @@ $saved_colors = $stmt->fetchAll();
     </style>
 </head>
 <body>
+    <header>
+    <img src="..\assets\Návrh bez názvu.png" alt="Logo" class="site-logo">
     <div class="header">
         <h2>Všechny uložené barevné kombinace</h2>
         <a href="colormixer.php" class="btn">Zpět na míchačku</a>
@@ -66,5 +68,9 @@ $saved_colors = $stmt->fetchAll();
             </tr>
         <?php endif; ?>
     </table>
+</header>
+<footer>
+    &copy; 2025 Uložené barvy. Všechna práva vyhrazena.
+</footer>
 </body>
 </html>

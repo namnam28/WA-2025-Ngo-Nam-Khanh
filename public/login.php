@@ -11,7 +11,6 @@ $user = new User($pdo);
 
 $error = null;
 
-
 // Přesměrování, pokud jste již přihlášeni
 if (isset($_SESSION['user_id'])) {
     header("Location:../index.php");
@@ -43,6 +42,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="../style.css">
 </head>
 <body>
+    <header>
+        <!-- You can add a logo or site title here if desired -->
+        <!-- <img src="../images/logo.png" alt="Logo" class="site-logo"> -->
+        <!-- <h1>Míchačka barev</h1> -->
+    </header>
     <div class="auth-container">
         <h2>Přihlášení</h2>
         <?php if ($error): ?>
@@ -52,16 +56,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <form method="POST">
             <div class="form-group">
                 <label for="username">Uživatelské jméno</label>
-                <input type="text" user_id="username" name="username" required autocomplete="username">
+                <input type="text" id="username" name="username" required autocomplete="username">
             </div>
             <div class="form-group">
                 <label for="password">Heslo</label>
-                <input type="password" user_id="password" name="password" required autocomplete="current-password">
+                <input type="password" id="password" name="password" required autocomplete="current-password">
             </div>
             <button type="submit" class="btn-primary">Přihlásit</button>
         </form>
 
         <p class="auth-link">Nemáte účet? <a href="register.php">Zaregistrujte se</a></p>
     </div>
+    <footer>
+        
+    </footer>
 </body>
 </html>

@@ -52,6 +52,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="../style.css">
 </head>
 <body>
+    <header>
+    
     <div class="auth-container">
         <h2>Registrace</h2>
         <?php if ($error) echo "<p class='error'>" . htmlspecialchars($error) . "</p>"; ?>
@@ -76,5 +78,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </form>
         <p>Již máte účet? <a href="login.php">Přihlaste se</a></p>
     </div>
+</header>
 </body>
 </html>

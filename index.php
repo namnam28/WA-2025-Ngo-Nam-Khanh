@@ -110,7 +110,7 @@ $latest_comments = $stmt->fetchAll();
         </main>
 
         <footer>
-            <p></p>
+            &copy; 2025 Psychologie barev. Všechna práva vyhrazena.
         </footer>
     </div>
 
