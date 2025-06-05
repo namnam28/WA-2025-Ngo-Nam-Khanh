@@ -7,9 +7,61 @@ session_start();
 include('config/database.php');
 $pdo = connectDB();
 
-// Zpracování nových komentářů (pouze pro přihlášené uživatele)
 $error = '';
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+$editComment = null;
+
+// Handle delete action
+if (isset($_GET['delete']) && isset($_SESSION['user_id'])) {
+    $comment_id = (int)$_GET['delete'];
+    // Only allow delete if the user is the owner
+    $stmt = $pdo->prepare("SELECT * FROM comments WHERE id = ?");
+    $stmt->execute([$comment_id]);
+    $comment = $stmt->fetch();
+    if ($comment && $comment['username'] === $_SESSION['username']) {
+        $pdo->prepare("DELETE FROM comments WHERE id = ?")->execute([$comment_id]);
+        header("Location: " . strtok($_SERVER['REQUEST_URI'], '?'));
+        exit();
+    } else {
+        $error = "Nemáte oprávnění smazat tento komentář.";
+    }
+}
+
+// Handle edit action: show form with the comment text
+if (isset($_GET['edit']) && isset($_SESSION['user_id'])) {
+    $comment_id = (int)$_GET['edit'];
+    $stmt = $pdo->prepare("SELECT * FROM comments WHERE id = ?");
+    $stmt->execute([$comment_id]);
+    $comment = $stmt->fetch();
+    if ($comment && $comment['username'] === $_SESSION['username']) {
+        $editComment = $comment;
+    } else {
+        $error = "Nemáte oprávnění upravit tento komentář.";
+    }
+}
+
+// Handle update (edit submit)
+if (isset($_POST['edit_id']) && isset($_SESSION['user_id'])) {
+    $comment_id = (int)$_POST['edit_id'];
+    $newComment = trim($_POST['comment']);
+    $stmt = $pdo->prepare("SELECT * FROM comments WHERE id = ?");
+    $stmt->execute([$comment_id]);
+    $comment = $stmt->fetch();
+    if ($comment && $comment['username'] === $_SESSION['username']) {
+        if ($newComment !== '') {
+            $pdo->prepare("UPDATE comments SET comment = ? WHERE id = ?")->execute([$newComment, $comment_id]);
+            header("Location: " . strtok($_SERVER['REQUEST_URI'], '?'));
+            exit();
+        } else {
+            $error = "Komentář nesmí být prázdný.";
+            $editComment = $comment;
+        }
+    } else {
+        $error = "Nemáte oprávnění upravit tento komentář.";
+    }
+}
+
+// Handle new comment
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['edit_id'])) {
     if (!isset($_SESSION['user_id'])) {
         $error = "Pro přidání komentáře se musíte přihlásit.";
     } else {
@@ -19,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($comment !== '') {
             $stmt = $pdo->prepare("INSERT INTO comments (username, comment, created_at) VALUES (?, ?, NOW())");
             $stmt->execute([$username, $comment]);
-            header("Location: " . $_SERVER['PHP_SELF']);
+            header("Location: " . strtok($_SERVER['REQUEST_URI'], '?'));
             exit();
         } else {
             $error = "Komentář nesmí být prázdný.";
@@ -27,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Načíst komentáře
+// Load comments
 $stmt = $pdo->query("SELECT * FROM comments ORDER BY created_at DESC, id DESC");
 $comments = $stmt->fetchAll();
 ?>
@@ -47,8 +99,12 @@ $comments = $stmt->fetchAll();
         textarea { width: 100%; box-sizing: border-box; }
         .error { color: #c00; margin-bottom: 1em; }
         .login-link { color: #2963a5; text-decoration: underline; }
-        button { margin-top: 0.5em; padding: 0.4em 1.2em; background: #2963a5; color: #fff; border: none; border-radius: 4px; }
-        button:hover { background: #19436d; }
+        button, .edit-link, .delete-link { margin-top: 0.5em; padding: 0.4em 1.2em; background: #2963a5; color: #fff; border: none; border-radius: 4px; text-decoration: none; cursor: pointer; }
+        button:hover, .edit-link:hover, .delete-link:hover { background: #19436d; }
+        .edit-delete { margin-top: 0.5em; }
+        .edit-link, .delete-link { display: inline-block; margin-right: 0.5em; font-size: 0.95em; }
+        .delete-link { background: #c00; }
+        .delete-link:hover { background: #800; }
     </style>
 </head>
 <body>
@@ -69,6 +125,12 @@ $comments = $stmt->fetchAll();
                     <div>
                         <?= nl2br(htmlspecialchars($c['comment'])) ?>
                     </div>
+                    <?php if (isset($_SESSION['user_id']) && $c['username'] === $_SESSION['username']): ?>
+                        <div class="edit-delete">
+                            <a href="?edit=<?= $c['id'] ?>" class="edit-link">Upravit</a>
+                            <a href="?delete=<?= $c['id'] ?>" class="delete-link" onclick="return confirm('Opravdu chcete smazat tento komentář?')">Smazat</a>
+                        </div>
+                    <?php endif; ?>
                 </div>
             <?php endforeach; ?>
         <?php else: ?>
@@ -77,21 +139,41 @@ $comments = $stmt->fetchAll();
     </div>
 
     <?php if (isset($_SESSION['user_id'])): ?>
-        <form method="post">
-            <?php if ($error): ?>
-                <div class="error"><?= htmlspecialchars($error) ?></div>
-            <?php endif; ?>
-            <label>
-                Uživatelské jméno: <strong><?= htmlspecialchars($_SESSION['username']) ?></strong>
-            </label>
-            <br>
-            <label>
-                Komentář:<br>
-                <textarea name="comment" rows="4" required maxlength="1000" placeholder="Napište svůj komentář..."></textarea>
-            </label>
-            <br>
-            <button type="submit">Přidat komentář</button>
-        </form>
+        <?php if ($editComment): ?>
+            <form method="post">
+                <?php if ($error): ?>
+                    <div class="error"><?= htmlspecialchars($error) ?></div>
+                <?php endif; ?>
+                <input type="hidden" name="edit_id" value="<?= $editComment['id'] ?>">
+                <label>
+                    Uživatelské jméno: <strong><?= htmlspecialchars($_SESSION['username']) ?></strong>
+                </label>
+                <br>
+                <label>
+                    Upravit komentář:<br>
+                    <textarea name="comment" rows="4" required maxlength="1000"><?= htmlspecialchars($editComment['comment']) ?></textarea>
+                </label>
+                <br>
+                <button type="submit">Uložit změny</button>
+                <a href="<?= strtok($_SERVER['REQUEST_URI'], '?') ?>" class="edit-link">Zrušit</a>
+            </form>
+        <?php else: ?>
+            <form method="post">
+                <?php if ($error): ?>
+                    <div class="error"><?= htmlspecialchars($error) ?></div>
+                <?php endif; ?>
+                <label>
+                    Uživatelské jméno: <strong><?= htmlspecialchars($_SESSION['username']) ?></strong>
+                </label>
+                <br>
+                <label>
+                    Komentář:<br>
+                    <textarea name="comment" rows="4" required maxlength="1000" placeholder="Napište svůj komentář..."></textarea>
+                </label>
+                <br>
+                <button type="submit">Přidat komentář</button>
+            </form>
+        <?php endif; ?>
     <?php else: ?>
         <p style="color: #c00; font-weight: bold;">Pro přidání komentáře se prosím <a class="login-link" href="/Projekt/WA-2025-Ngo-Nam-Khanh/public/login.php">přihlaste</a>. Jako host si můžete komentáře pouze přečíst.</p>
     <?php endif; ?>

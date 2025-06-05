@@ -37,7 +37,7 @@ $latest_comments = $stmt->fetchAll();
                 <ul>
                     <li><a href="#introduction" class="nav-link">Úvod</a></li>
                     <li><a href="#meanings" class="nav-link">Barvy</a></li>
-                    <li><a href="/Projekt/WA-2025-Ngo-Nam-Khanh/comments.php">Komentáře</a></li>
+                    <li><a href="/Projekt/WA-2025-Ngo-Nam-Khanh/comments.php">Fórum</a></li>
                     <li><a href="/Projekt/WA-2025-Ngo-Nam-Khanh/colormixer.php">Míchačka barev</a></li>
                     <li><a href="/Projekt/WA-2025-Ngo-Nam-Khanh/savedcolors.php">Uložené Barvy</a></li>
                 </ul>
